@@ -4,7 +4,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Wistron QR</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2f3156">
+<link rel="apple-touch-icon" href="icon-192.png">
 
 <style>
 *{
@@ -75,8 +80,8 @@ body{
     font-size:22px;
 }
 </style>
-</head>
 
+</head>
 <body>
 
 <div class="container">
@@ -140,6 +145,14 @@ function updateCountdown(){
 
 updateCountdown();
 setInterval(updateCountdown,1000);
+
+/* PWA */
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+    });
+}
 
 </script>
 
