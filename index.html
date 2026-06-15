@@ -16,10 +16,13 @@
 body{
     background:#000;
     font-family:Arial,sans-serif;
+    display:flex;
+    justify-content:center;
 }
 
 .container{
     position:relative;
+    width:100%;
     max-width:430px;
     margin:auto;
 }
@@ -42,29 +45,29 @@ body{
 
 .clock{
     position:absolute;
-    top:175px;
+    top:195px;
     left:0;
     right:0;
     text-align:center;
     color:#000;
-    font-size:18px;
+    font-size:16px;
     font-weight:bold;
 }
 
 .status{
     position:absolute;
-    top:540px;
+    top:510px;
     left:0;
     right:0;
     text-align:center;
     color:#67d86f;
-    font-size:28px;
+    font-size:30px;
     font-weight:bold;
 }
 
 .countdown{
     position:absolute;
-    top:585px;
+    top:555px;
     left:0;
     right:0;
     text-align:center;
@@ -72,8 +75,8 @@ body{
     font-size:22px;
 }
 </style>
-
 </head>
+
 <body>
 
 <div class="container">
@@ -98,7 +101,7 @@ const id = params.get("id") || "V25060141";
 const name = params.get("name") || "Hà Đình Trung";
 
 document.getElementById("employee").innerHTML =
-`${id}(${name})`;
+`${id} (${name})`;
 
 function updateClock(){
 
