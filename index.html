@@ -23,30 +23,28 @@ html,body{
     overflow:hidden;
     touch-action:manipulation;
 }
-
+```css
 body{
     background:#000;
     font-family:Arial,sans-serif;
-    display:flex;
-    justify-content:center;
+    margin:0;
 }
 
 .container{
     position:relative;
-    width:100%;
-    max-width:430px;
-    margin:auto;
+    width:100vw;
+    max-width:none;
+    margin:0 auto;
 }
 
 .background{
     width:100%;
-    height:auto;
     display:block;
 }
 
 .employee{
     position:absolute;
-    top:9%;
+    top:52px;
     left:0;
     right:0;
     text-align:center;
@@ -57,7 +55,7 @@ body{
 
 .clock{
     position:absolute;
-    top:34%;
+    top:205px;
     left:0;
     right:0;
     text-align:center;
@@ -68,7 +66,7 @@ body{
 
 .status{
     position:absolute;
-    top:82%;
+    top:505px;
     left:0;
     right:0;
     text-align:center;
@@ -80,7 +78,7 @@ body{
 
 .countdown{
     position:absolute;
-    top:88%;
+    top:548px;
     left:0;
     right:0;
     text-align:center;
@@ -90,12 +88,12 @@ body{
 }
 
 @keyframes blink{
-    0%,100%{
-        opacity:1;
-    }
-    50%{
-        opacity:0.4;
-    }
+    0%,100%{opacity:1;}
+    50%{opacity:0.4;}
+}
+```
+
+
 }
 </style>
 </head>
