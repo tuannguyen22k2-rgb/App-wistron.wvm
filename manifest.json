@@ -1,7 +1,7 @@
 {
   "name": "员工码",
   "short_name": "员工码",
-  "start_url": "./",
+  "start_url": "/App-wistron.wvm/"
   "display": "standalone",
   "background_color": "#2f3156",
   "theme_color": "#2f3156",
