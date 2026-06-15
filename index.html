@@ -1,11 +1,10 @@
-```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wistron QR</title>
+<title>员工码</title>
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2f3156">
@@ -80,82 +79,4 @@ body{
     font-size:22px;
 }
 </style>
-
 </head>
-<body>
-
-<div class="container">
-
-    <img src="qrcode.jpg" class="background" alt="">
-
-    <div class="employee" id="employee"></div>
-
-    <div class="clock" id="clock"></div>
-
-    <div class="status">已生效</div>
-
-    <div class="countdown" id="countdown"></div>
-
-</div>
-
-<script>
-
-const params = new URLSearchParams(window.location.search);
-
-const id = params.get("id") || "V25060141";
-const name = params.get("name") || "Hà Đình Trung";
-
-document.getElementById("employee").innerHTML =
-`${id} (${name})`;
-
-function updateClock(){
-
-    const d = new Date();
-
-    const y = d.getFullYear();
-    const m = String(d.getMonth()+1).padStart(2,'0');
-    const day = String(d.getDate()).padStart(2,'0');
-
-    const h = String(d.getHours()).padStart(2,'0');
-    const min = String(d.getMinutes()).padStart(2,'0');
-    const s = String(d.getSeconds()).padStart(2,'0');
-
-    document.getElementById("clock").innerHTML =
-    `${y}-${m}-${day} ${h}:${min}:${s}`;
-}
-
-updateClock();
-setInterval(updateClock,1000);
-
-let totalSeconds = 8 * 3600 + 32 * 60 + 20;
-
-function updateCountdown(){
-
-    const h = Math.floor(totalSeconds / 3600);
-    const m = Math.floor((totalSeconds % 3600) / 60);
-    const s = totalSeconds % 60;
-
-    document.getElementById("countdown").innerHTML =
-    `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-
-    if(totalSeconds > 0){
-        totalSeconds--;
-    }
-}
-
-updateCountdown();
-setInterval(updateCountdown,1000);
-
-/* PWA */
-
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js');
-    });
-}
-
-</script>
-
-</body>
-</html>
-```
