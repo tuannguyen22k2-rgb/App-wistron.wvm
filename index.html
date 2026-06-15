@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -42,7 +41,7 @@ body{
 
 .clock{
     position:absolute;
-    top:220px;
+    top:175px;
     left:0;
     right:0;
     text-align:center;
@@ -53,7 +52,7 @@ body{
 
 .status{
     position:absolute;
-    top:645px;
+    top:540px;
     left:0;
     right:0;
     text-align:center;
@@ -64,12 +63,23 @@ body{
 
 .countdown{
     position:absolute;
-    top:690px;
+    top:585px;
     left:0;
     right:0;
     text-align:center;
     color:#67d86f;
     font-size:22px;
+}
+
+.notice{
+    position:absolute;
+    left:45px;
+    right:45px;
+    bottom:95px;
+    text-align:center;
+    color:#f5e6b0;
+    font-size:15px;
+    line-height:1.8;
 }
 </style>
 
@@ -87,6 +97,11 @@ body{
     <div class="status">已生效</div>
 
     <div class="countdown" id="countdown"></div>
+
+    <div class="notice">
+        尊敬的员工您好，您已进入企业涉密区域，<br>
+        出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
+    </div>
 
 </div>
 
@@ -142,4 +157,3 @@ setInterval(updateCountdown,1000);
 
 </body>
 </html>
-```
