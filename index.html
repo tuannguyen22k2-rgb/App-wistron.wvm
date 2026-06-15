@@ -1,61 +1,88 @@
+```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>QR Access</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mã Nhân Viên</title>
 
 <style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
 body{
-margin:0;
-font-family:Arial;
-background:linear-gradient(#424460,#131a2c);
-color:white;
-text-align:center;
+    background:#000;
+    font-family:Arial,sans-serif;
 }
 
 .container{
-max-width:400px;
-margin:auto;
-padding:20px;
+    position:relative;
+    width:100%;
+    max-width:850px;
+    margin:auto;
 }
 
-.card{
-background:#f2f2f2;
-border-radius:12px;
-overflow:hidden;
+.background{
+    width:100%;
+    display:block;
 }
 
-.top{
-background:#d8ad3a;
-color:white;
-padding:20px;
-font-size:16px;
+.employee{
+    position:absolute;
+    top:55px;
+    left:0;
+    right:0;
+    text-align:center;
+    color:#f5e6b0;
+    font-size:24px;
+    font-weight:500;
 }
 
-.qr{
-width:250px;
-margin:20px auto;
-display:block;
-}
-
-.time{
-font-size:20px;
-margin-top:10px;
+.clock{
+    position:absolute;
+    top:300px;
+    left:0;
+    right:0;
+    text-align:center;
+    color:#111;
+    font-size:22px;
+    font-weight:bold;
 }
 
 .status{
-color:#32c35a;
-font-size:24px;
+    position:absolute;
+    top:720px;
+    left:0;
+    right:0;
+    text-align:center;
+    color:#53d769;
+    font-size:30px;
+    font-weight:bold;
+}
+
+.countdown{
+    position:absolute;
+    top:770px;
+    left:0;
+    right:0;
+    text-align:center;
+    color:#53d769;
+    font-size:22px;
 }
 
 .notice{
-margin-top:40px;
-color:#f1e1b0;
-line-height:1.6;
+    position:absolute;
+    bottom:120px;
+    left:40px;
+    right:40px;
+    text-align:center;
+    color:#f5e6b0;
+    font-size:16px;
+    line-height:1.7;
 }
-
 </style>
 </head>
 
@@ -63,40 +90,73 @@ line-height:1.6;
 
 <div class="container">
 
-<h2 style="color:#f1e1b0">V25060141 (Hà Đình Trung)</h2>
+    <img src="qrcode.jpg" class="background" alt="">
 
-<div class="card">
+    <div class="employee" id="employee"></div>
 
-<div class="top">
-将二维码对准扫描器刷码出场
-</div>
+    <div class="clock" id="clock"></div>
 
-<div class="time">
-2026-2-28 16:28:21
-</div>
+    <div class="status">已生效</div>
 
-<img class="qr"
-src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=V25060141">
+    <div class="countdown" id="countdown">08:32:20</div>
 
-<div style="color:#888">
-刷新二维码
-</div>
-
-<div class="status">
-已生效
-</div>
-
-<div class="status">
-08:32:20
-</div>
+    <div class="notice">
+        尊敬的员工您好，您已进入企业涉密区域，<br>
+        出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
+    </div>
 
 </div>
 
-<div class="notice">
-尊敬的员工您好，您已进入企业涉密区域，出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。
-</div>
+<script>
 
-</div>
+const params = new URLSearchParams(window.location.search);
+
+const id = params.get("id") || "V25060141";
+const name = params.get("name") || "Hà Đình Trung";
+
+document.getElementById("employee").innerHTML =
+`${id} (${name})`;
+
+function updateClock(){
+
+    const d = new Date();
+
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+
+    const h = String(d.getHours()).padStart(2,'0');
+    const min = String(d.getMinutes()).padStart(2,'0');
+    const s = String(d.getSeconds()).padStart(2,'0');
+
+    document.getElementById("clock").innerHTML =
+    `${y}-${m}-${day} ${h}:${min}:${s}`;
+}
+
+updateClock();
+setInterval(updateClock,1000);
+
+let totalSeconds = 8 * 3600 + 32 * 60 + 20;
+
+function updateCountdown(){
+
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
+
+    document.getElementById("countdown").innerHTML =
+    `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+    if(totalSeconds > 0){
+        totalSeconds--;
+    }
+}
+
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+</script>
 
 </body>
 </html>
+```
