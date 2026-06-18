@@ -8,6 +8,10 @@
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2f3156">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="员工码">
+
 <link rel="apple-touch-icon" href="icon-192.png">
 
 <style>
@@ -32,6 +36,7 @@ body{
     margin:0;
 }
 
+
 .container{
     position:relative;
     width:100%;
@@ -46,7 +51,7 @@ body{
 
 .employee{
     position:absolute;
-    top:35%px;
+    top:6.5%;
     left:0;
     right:0;
     text-align:center;
@@ -57,18 +62,18 @@ body{
 
 .clock{
     position:absolute;
-    top:165%px;
+    top:27%;
     left:0;
     right:0;
     text-align:center;
-    color:#888;
-   font-size:clamp(16px,4.2vw,18px);
-    
+    color:#000;
+    font-size:clamp(15px,4vw,18px);
+    font-weight:500;
 }
 
 .status{
     position:absolute;
-    top:450%;
+    top:63%;
     left:0;
     right:0;
     text-align:center;
@@ -80,21 +85,23 @@ body{
 
 .countdown{
     position:absolute;
-    top:480px;
+    top:69%;
     left:0;
     right:0;
     text-align:center;
     color:#67d86f;
     font-size:clamp(16px,4.2vw,18px);
-     font-weight:500;
+    font-weight:500;
     animation:blink 0s infinite;
 }
+
+
 
 @keyframes blink{
     0%,100%{opacity:1;}
     50%{opacity:0.4;}
 }
-```
+
 
 
 }
