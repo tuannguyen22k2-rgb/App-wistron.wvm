@@ -129,7 +129,10 @@ body{
 const params = new URLSearchParams(window.location.search);
 
 const id = params.get("id") || "V25100062";
+
 const name = params.get("name") || "Orin Nguyen";
+
+document.title = `${id} - ${name}`;
 
 document.getElementById("employee").innerHTML =
 `${id} (${name})`;
