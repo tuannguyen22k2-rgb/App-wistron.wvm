@@ -128,15 +128,13 @@ body{
 
 const params = new URLSearchParams(window.location.search);
 
-const id = params.get("id") || "V25100062";
+const id = params.get("id") || "";
+const name = params.get("name") || "";
 
-const name = params.get("name") || "Orin Nguyen";
-
-document.title = `${id} - ${name}`;
+document.title = `${id} ${name}`.trim();
 
 document.getElementById("employee").innerHTML =
-`${id} (${name})`;
-
+(id || name) ? `${id}${name ? ` (${name})` : ""}` : "";
 function updateClock(){
 
     const d = new Date();
