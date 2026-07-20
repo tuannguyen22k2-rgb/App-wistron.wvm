@@ -125,17 +125,28 @@ body{
 </div>
 
 <script>
-
+// Lấy tham số từ URL
 const params = new URLSearchParams(window.location.search);
 
-const id = params.get("id") || "V25100062";
+// Nếu URL có id hoặc name thì lưu vào localStorage
+if (params.has("id")) {
+    localStorage.setItem("employeeId", params.get("id"));
+}
 
-const name = params.get("name") || "Orin Nguyen";
+if (params.has("name")) {
+    localStorage.setItem("employeeName", params.get("name"));
+}
 
+// Lấy dữ liệu đã lưu
+const id = localStorage.getItem("employeeId") || "V25100062";
+const name = localStorage.getItem("employeeName") || "Orin Nguyen";
+
+// Hiển thị
 document.title = `${id} - ${name}`;
 
 document.getElementById("employee").innerHTML =
-`${id} (${name})`;
+    `${id} (${name})`;
+
 function updateClock(){
 
     const d = new Date();
