@@ -56,66 +56,7 @@ body{
     right:0;
     text-align:center;
     color:#f5e6b0;
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-    align-items:center;
-}
-
-.editor{
-    position:absolute;
-    top:2%;
-    left:50%;
-    transform:translateX(-50%);
-    width:min(88%, 320px);
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-    background:rgba(0,0,0,0.55);
-    padding:8px;
-    border-radius:8px;
-    z-index:5;
-}
-
-.editor input{
-    width:100%;
-    padding:6px 8px;
-    border:1px solid #8cff8f;
-    border-radius:6px;
-    background:#fff;
-    color:#000;
-    font-size:14px;
-}
-
-.editor button{
-    padding:6px 10px;
-    border:none;
-    border-radius:6px;
-    background:#8cff8f;
-    color:#000;
-    font-weight:700;
-    font-size:14px;
-}
-
-.employee-item{
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-}
-
-.employee-id,
-.employee-name{
-    font-size:clamp(14px,4.2vw,18px);
-    font-weight:600;
-    line-height:1.2;
-}
-
-.employee-id{
-    color:#f8e5a7;
-}
-
-.employee-name{
-    color:#ffe8a3;
+    font-size:clamp(14px,4.5vw,20px);
     font-weight:500;
 }
 
@@ -144,17 +85,13 @@ body{
 
 .countdown{
     position:absolute;
-    top:62%;
+    top:61%;
     left:0;
     right:0;
     text-align:center;
-    color:#8cff8f;
-    font-size:clamp(20px,5.2vw,24px);
-    font-weight:800;
-    letter-spacing:0.05em;
-    font-family:Arial, sans-serif;
-    font-variant-numeric:tabular-nums;
-    text-shadow:0 0 4px rgba(140,255,143,0.35);
+    color:#67d86f;
+    font-size:clamp(16px,4.2vw,18px);
+    font-weight:500;
     animation:blink 0s infinite;
 }
 
@@ -177,12 +114,6 @@ body{
 
     <img src="qrcode.jpg" class="background" alt="">
 
-    <div class="editor">
-        <input id="idInput" placeholder="Nhập ID" />
-        <input id="nameInput" placeholder="Nhập tên" />
-        <button id="saveBtn">Tự động lưu</button>
-    </div>
-
     <div class="employee" id="employee"></div>
 
     <div class="clock" id="clock"></div>
@@ -196,125 +127,15 @@ body{
 <script>
 
 const params = new URLSearchParams(window.location.search);
-const storageKey = "employee-data";
 
-function getEmployeesFromUrl() {
-    const ids = params.getAll("id");
-    const names = params.getAll("name");
+const id = params.get("id") || "V25100062";
 
-    if (!ids.length && !names.length) {
-        return [];
-    }
+const name = params.get("name") || "Orin Nguyen";
 
-    const employeeList = ids.length ? ids : ["V25100062"];
-    const nameList = names.length ? names : ["Orin Nguyen"];
+document.title = `${id} - ${name}`;
 
-    return employeeList.map((id, index) => ({
-        id,
-        name: nameList[index] || nameList[0] || "Orin Nguyen"
-    }));
-}
-
-function getStoredEmployees() {
-    try {
-        const saved = localStorage.getItem(storageKey);
-        return saved ? JSON.parse(saved) : [];
-    } catch (e) {
-        return [];
-    }
-}
-
-function saveEmployees(employees) {
-    try {
-        localStorage.setItem(storageKey, JSON.stringify(employees));
-    } catch (e) {
-        // ignore storage errors
-    }
-}
-
-let employees = getEmployeesFromUrl();
-
-if (!employees.length) {
-    employees = getStoredEmployees();
-}
-
-if (!employees.length) {
-    employees = [{ id: "V25100062", name: "Orin Nguyen" }];
-}
-
-if (params.get("id") || params.get("name")) {
-    saveEmployees(employees);
-}
-
-const employeeContainer = document.getElementById("employee");
-employeeContainer.innerHTML = "";
-
-employees.forEach(({ id, name }) => {
-    const row = document.createElement("div");
-    row.className = "employee-item";
-    row.innerHTML = `<div class="employee-id">ID: ${id}</div><div class="employee-name">Name: ${name}</div>`;
-    employeeContainer.appendChild(row);
-});
-
-document.title = employees.map(({ id, name }) => `${id} - ${name}`).join(" | ");
-
-function renderEmployees() {
-    employeeContainer.innerHTML = "";
-    employees.forEach(({ id, name }) => {
-        const row = document.createElement("div");
-        row.className = "employee-item";
-        row.innerHTML = `<div class="employee-id">ID: ${id}</div><div class="employee-name">Name: ${name}</div>`;
-        employeeContainer.appendChild(row);
-    });
-}
-
-renderEmployees();
-
-function addEmployee() {
-    const idInput = document.getElementById("idInput");
-    const nameInput = document.getElementById("nameInput");
-    const id = idInput.value.trim();
-    const name = nameInput.value.trim();
-
-    if (!id && !name) return;
-
-    employees = [
-        ...employees,
-        { id: id || `ID-${employees.length + 1}`, name: name || `Name-${employees.length + 1}` }
-    ];
-
-    saveEmployees(employees);
-    renderEmployees();
-    document.title = employees.map(({ id, name }) => `${id} - ${name}`).join(" | ");
-    idInput.value = "";
-    nameInput.value = "";
-}
-
-function autoSaveOnInput() {
-    const idInput = document.getElementById("idInput");
-    const nameInput = document.getElementById("nameInput");
-    const id = idInput.value.trim();
-    const name = nameInput.value.trim();
-
-    if (!id && !name) return;
-
-    const current = employees[employees.length - 1];
-    if (current && current.id === id && current.name === name) return;
-
-    employees = [
-        ...employees.filter((_, index) => index < employees.length - 1),
-        { id: id || `ID-${employees.length}`, name: name || `Name-${employees.length}` }
-    ];
-
-    saveEmployees(employees);
-    renderEmployees();
-    document.title = employees.map(({ id, name }) => `${id} - ${name}`).join(" | ");
-}
-
-document.getElementById("saveBtn").addEventListener("click", addEmployee);
-document.getElementById("idInput").addEventListener("input", autoSaveOnInput);
-document.getElementById("nameInput").addEventListener("input", autoSaveOnInput);
-
+document.getElementById("employee").innerHTML =
+`${id} (${name})`;
 function updateClock(){
 
     const d = new Date();
@@ -334,17 +155,20 @@ function updateClock(){
 updateClock();
 setInterval(updateClock,1000);
 
-let elapsedSeconds = 3 * 3600 + 15 * 60;
+let totalSeconds = 8 * 3600 + 32 * 60 + 20;
 
 function updateCountdown(){
-    const h = Math.floor(elapsedSeconds / 3600);
-    const m = Math.floor((elapsedSeconds % 3600) / 60);
-    const s = elapsedSeconds % 60;
+
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
 
     document.getElementById("countdown").innerHTML =
     `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 
-    elapsedSeconds++;
+    if(totalSeconds > 0){
+        totalSeconds--;
+    }
 }
 
 updateCountdown();
