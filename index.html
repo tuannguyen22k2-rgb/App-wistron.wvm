@@ -155,24 +155,21 @@ function updateClock(){
 updateClock();
 setInterval(updateClock,1000);
 
-let totalSeconds = 8 * 3600 + 32 * 60 + 20;
+let totalSeconds = 2 * 3600 + 32 * 60 + 20;
 
-function updateCountdown(){
+function updateCountdown() {
 
-    const h = Math.floor(totalSeconds / 3600);
-    const m = Math.floor((totalSeconds % 3600) / 60);
-    const s = totalSeconds % 60;
+    const h = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+    const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+    const s = String(totalSeconds % 60).padStart(2, "0");
 
-    document.getElementById("countdown").innerHTML =
-    `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    document.getElementById("countdown").textContent = `${h}:${m}:${s}`;
 
-    if(totalSeconds > 0){
-        totalSeconds--;
-    }
+    totalSeconds++;
 }
 
 updateCountdown();
-setInterval(updateCountdown,1000);
+setInterval(updateCountdown, 1000);
 
 document.addEventListener('contextmenu', e => e.preventDefault());
 
