@@ -128,25 +128,24 @@ body{
 // Lấy tham số từ URL
 const params = new URLSearchParams(window.location.search);
 
-// Nếu URL có id hoặc name thì lưu vào localStorage
-if (params.has("id")) {
+// Nếu URL có id thì lưu
+if (params.get("id")) {
     localStorage.setItem("employeeId", params.get("id"));
 }
 
-if (params.has("name")) {
+// Nếu URL có name thì lưu
+if (params.get("name")) {
     localStorage.setItem("employeeName", params.get("name"));
 }
 
-// Lấy dữ liệu đã lưu
-const id = localStorage.getItem("employeeId") || "V25100062";
-const name = localStorage.getItem("employeeName") || "Orin Nguyen";
+// Luôn đọc từ localStorage
+const id = localStorage.getItem("employeeId") || "";
+const name = localStorage.getItem("employeeName") || "";
 
-// Hiển thị
-document.title = `${id} - ${name}`;
+document.title = id && name ? `${id} - ${name}` : "员工码";
 
-document.getElementById("employee").innerHTML =
-    `${id} (${name})`;
-
+document.getElementById("employee").textContent =
+    id && name ? `${id} (${name})` : "";
 function updateClock(){
 
     const d = new Date();
