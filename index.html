@@ -166,21 +166,25 @@ function updateClock(){
 updateClock();
 setInterval(updateClock,1000);
 
-let totalSeconds = 2 * 3600 + 32 * 60 + 20;
+const morningEnd = 7 * 3600 + 55 * 60;
+const eveningEnd = 19 * 3600 + 55 * 60;
 
-function updateCountdown() {
+let elapsed;
 
-    const h = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
-    const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
-    const s = String(totalSeconds % 60).padStart(2, "0");
-
-    document.getElementById("countdown").textContent = `${h}:${m}:${s}`;
-
-    totalSeconds++;
+if (current < morningEnd) {
+    elapsed = current;
+} else if (current < eveningEnd) {
+    elapsed = current - morningEnd;
+} else {
+    elapsed = current - eveningEnd;
 }
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
+const h = String(Math.floor(elapsed / 3600)).padStart(2, "0");
+const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, "0");
+const s = String(elapsed % 60).padStart(2, "0");
+
+document.getElementById("countdown").textContent =
+    `${h}:${m}:${s}`;
 
 document.addEventListener('contextmenu', e => e.preventDefault());
 
