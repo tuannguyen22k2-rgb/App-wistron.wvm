@@ -177,16 +177,15 @@ body{
 </div>
 
 <script>
-const params = new URLSearchParams(window.location.search);
+const id = "V25100062";
+const name = "Nguyễn Văn Tuấn";
 
-const STORAGE_PREFIX = "appWistron_";
+document.title = `${id} - ${name}`;
 
-if (params.get("id")) {
-    localStorage.setItem(STORAGE_PREFIX + "employeeId", params.get("id"));
-}
+const employeeElement = document.getElementById("employee");
 
-if (params.get("name")) {
-    localStorage.setItem(STORAGE_PREFIX + "employeeName", params.get("name"));
+if (employeeElement) {
+    employeeElement.textContent = `${id}(${name})`;
 }
 
 const id =
