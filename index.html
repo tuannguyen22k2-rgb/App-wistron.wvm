@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="员工码">
 
-<link rel="apple-touch-icon" href="icon-192(2).png">
+<link rel="apple-touch-icon" href="icon-512.png">
 
 <style>
 *{
@@ -41,12 +41,36 @@ body{
     position:relative;
     width:100%;
     max-width:430px;
+    aspect-ratio:1014/2048;
     margin:auto;
+    overflow:hidden;
+
+    transform-origin:center center;
+    transition:transform .3s ease;
+}
+
+.container.zoom{
+    transform:scale(1.08);
 }
 
 .background{
+    position:absolute;
+    top:0;
+    left:0;
+
     width:100%;
+    height:100%;
+
     display:block;
+
+    object-fit:fill;
+
+    transition:transform .3s ease;
+    transform-origin:center center;
+}
+
+.background.zoom{
+    transform:scale(1.08);
 }
 
 .employee{
@@ -56,7 +80,7 @@ body{
     right:0;
     text-align:center;
     color:#f5e6b0;
-    font-size:clamp(14px,4.5vw,20px);
+    font-size:19px;
     font-weight:500;
 }
 
@@ -67,52 +91,80 @@ body{
     right:0;
     text-align:center;
     color:#000;
-    font-size:clamp(15px,4vw,18px);
+    font-size:17px;
     font-weight:500;
-}
-
-.status{
-    position:absolute;
-    top:58%;
-    left:0;
-    right:0;
-    text-align:center;
-    color:#67d86f;
-    font-size:clamp(14px,4.2vw,20px);
-    font-weight:600;
-    animation:blink 1s infinite;
 }
 
 .countdown{
     position:absolute;
-    top:61%;
+    top:62%;
     left:0;
     right:0;
     text-align:center;
     color:#67d86f;
-    font-size:clamp(16px,4.2vw,18px);
+    font-size:18px;
     font-weight:500;
     animation:blink 0s infinite;
 }
 
-
+.status{
+    position:absolute;
+    top:58.5%;
+    left:0;
+    right:0;
+    text-align:center;
+    color:#67d86f;
+    font-size:20px;
+    font-weight:500;
+    animation:blink 2s infinite;
+}
 
 @keyframes blink{
     0%,100%{opacity:1;}
-    50%{opacity:0.4;}
+    50%{opacity:0;}
 }
 
+#refreshArea{
+    position:absolute;
 
+    top:54%;
+    left:32%;
 
+    width:36%;
+    height:35px;
+
+    background:transparent;
+    opacity:1;
+    z-index:9999;
+    cursor:pointer;
 }
+
+#zoomArea{
+    position:absolute;
+
+    top:8%;
+    left:12%;
+
+    width:76%;
+    height:10%;
+
+    background:transparent;
+
+    z-index:9998;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="container" id="card">
 
-    <img src="qrcode.jpg" class="background" alt="">
+    <img src="qrcode.jpg" class="background" id="background" alt="">
+
+    <div id="zoomArea"></div>
+
+    <div id="refreshArea"></div>
 
     <div class="employee" id="employee"></div>
 
@@ -139,76 +191,122 @@ if (params.get("name")) {
 }
 
 // Luôn đọc từ localStorage
-const id = localStorage.getItem("employeeId") || "V25040100";
-const name = localStorage.getItem("employeeName") || "Lê Văn Phương";
+const id = params.get("id") || localStorage.getItem("employeeId") || "V25040057";
+const name = params.get("name") || localStorage.getItem("employeeName") || "Nguyễn Mạnh Cương";
 
-// Hiển thị
-document.title = `${id} - ${name}`;
+document.title = id && name ? `${id} - ${name}` : "员工码";
 
-document.getElementById("employee").innerHTML =
-    `${id} (${name})`;
+document.getElementById("employee").textContent =
+    id && name ? `${id}(${name})` : "";
 function updateClock(){
 
     const d = new Date();
 
     const y = d.getFullYear();
-    const m = String(d.getMonth()+1).padStart(2,'0');
-    const day = String(d.getDate()).padStart(2,'0');
-
+    const m = d.getMonth() + 1;
+const day = d.getDate();
     const h = String(d.getHours()).padStart(2,'0');
     const min = String(d.getMinutes()).padStart(2,'0');
     const s = String(d.getSeconds()).padStart(2,'0');
 
     document.getElementById("clock").innerHTML =
-    `${y}-${m}-${day} ${h}:${min}:${s}`;
+    `${y}-${m}-${day}&nbsp; ${h}:${min}:${s}`;
 }
 
 updateClock();
-setInterval(updateClock,1000);
+setInterval(updateClock, 1000);
+
+
+// ===============================
+// COUNTDOWN 24 GIỜ
+// BẮT ĐẦU TỪ 00:00
+// ĐÓNG TRANG VẪN TIẾP TỤC
+// ===============================
+
+const startSeconds = 0;
+
+// Lấy thời điểm bắt đầu đã lưu
+let startTime = localStorage.getItem("countdownStartTime");
+
+// Nếu chưa có thì tạo thời điểm bắt đầu
+if (!startTime) {
+
+    startTime = Date.now();
+
+    localStorage.setItem(
+        "countdownStartTime",
+        startTime
+    );
+}
 
 function updateCountdown() {
-    const now = new Date();
 
-    const current = now.getHours() * 3600
-                  + now.getMinutes() * 60
-                  + now.getSeconds();
+    // Số giây đã trôi qua kể từ lúc bắt đầu
+    const elapsedSeconds = Math.floor(
+        (Date.now() - Number(startTime)) / 1000
+    );
 
-    const morningStart = 7 * 3600 + 55 * 60;
-    const eveningStart = 19 * 3600 + 55 * 60;
+    // Thời gian hiện tại của bộ đếm
+    const totalSeconds =
+        (startSeconds + elapsedSeconds) % (24 * 3600);
 
-    let elapsed;
 
-    if (current >= morningStart && current < eveningStart) {
-        elapsed = current - morningStart;
-    } else if (current >= eveningStart) {
-        elapsed = current - eveningStart;
+    // ===============================
+    // TÍNH GIỜ / PHÚT / GIÂY
+    // ===============================
+
+    const h = Math.floor(
+        totalSeconds / 3600
+    );
+
+    const m = Math.floor(
+        (totalSeconds % 3600) / 60
+    );
+
+    const s = totalSeconds % 60;
+
+
+    // ===============================
+    // HIỂN THỊ
+    // DƯỚI 1 GIỜ  → MM:SS
+    // TỪ 1 GIỜ   → HH:MM:SS
+    // ===============================
+
+    let displayTime;
+
+    if (h === 0) {
+
+        displayTime =
+            `${String(m).padStart(2, "0")}:` +
+            `${String(s).padStart(2, "0")}`;
+
     } else {
-        elapsed = current;
+
+        displayTime =
+            `${String(h).padStart(2, "0")}:` +
+            `${String(m).padStart(2, "0")}:` +
+            `${String(s).padStart(2, "0")}`;
     }
 
-    const h = String(Math.floor(elapsed / 3600)).padStart(2, "0");
-    const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, "0");
-    const s = String(elapsed % 60).padStart(2, "0");
 
-    const countdown = document.getElementById("countdown");
-
-    if (countdown) {
-        countdown.textContent = `${h}:${m}:${s}`;
-    }
+    // Đưa thời gian lên giao diện
+    document.getElementById("countdown").textContent =
+        displayTime;
 }
+
+
+// ===============================
+// CHẠY NGAY KHI MỞ APP
+// ===============================
 
 updateCountdown();
-setInterval(updateCountdown, 1000);
-}
 
-}
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
-const s = String(elapsed % 60).padStart(2, "0");
+// ===============================
+// CẬP NHẬT MỖI 1 GIÂY
+// ===============================
 
-document.getElementById("countdown").textContent =
-    `${h}:${m}:${s}`;
+setInterval(updateCountdown, 1000);    
 
 document.addEventListener('contextmenu', e => e.preventDefault());
 
@@ -223,6 +321,57 @@ if ('serviceWorker' in navigator) {
     });
 }                         
 
+const bg = document.getElementById("background");
+const card = document.getElementById("card");
+const refreshArea = document.getElementById("refreshArea");
+const zoomArea = document.getElementById("zoomArea");
+
+const backgrounds = [
+    "qrcode.jpg",
+    "qrcode2.jpg",
+    "qrcode3.jpg"
+];
+
+let current = 0;
+
+function changeBackground(e) {
+    e.preventDefault();
+
+    refreshArea.style.pointerEvents = "none";
+
+    setTimeout(() => {
+        current = (current + 1) % backgrounds.length;
+        bg.src = backgrounds[current];
+
+        refreshArea.style.pointerEvents = "auto";
+    }, 3000);
+}
+
+refreshArea.addEventListener("click", changeBackground);
+refreshArea.addEventListener("touchstart", changeBackground);
+
+// =================== Zoom ===================
+
+let lastTap = 0;
+let zoomed = false;
+
+zoomArea.addEventListener("touchend", function(e){
+
+    const now = Date.now();
+
+    if(now - lastTap < 300){
+
+        e.preventDefault();
+
+        zoomed = !zoomed;
+
+        card.classList.toggle("zoom", zoomed);
+
+    }
+
+    lastTap = now;
+
+});
 </script>
 
 </body>
