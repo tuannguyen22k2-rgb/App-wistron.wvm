@@ -178,19 +178,15 @@ body{
 
 <script>
 const id =
-    params.get("id") ||
-    localStorage.getItem(STORAGE_PREFIX + "employeeId") ||
-    "V25100062";
+const id = "V25100062";
+const name = "Nguyễn Văn Tuấn";
 
-const name =
-    params.get("name") ||
-    localStorage.getItem(STORAGE_PREFIX + "employeeName") ||
-    "Nguyễn Văn Tuấn";
+document.title = `${id} - ${name}`;
 
-document.title = id && name ? `${id} - ${name}` : "员工码";
-
-document.getElementById("employee").textContent =
-    id && name ? `${id}(${name})` : "";
+const employeeElement = document.getElementById("employee");
+if (employeeElement) {
+    employeeElement.textContent = `${id}(${name})`;
+}
 function updateClock(){
 
     const d = new Date();
