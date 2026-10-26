@@ -230,52 +230,8 @@ const displayTime =
 document.getElementById("countdown").textContent = displayTime;
 
 
-    // Thời gian hiện tại của bộ đếm
-    const totalSeconds =
-        (startSeconds + elapsedSeconds) % (24 * 3600);
-
-
-    // ===============================
-    // TÍNH GIỜ / PHÚT / GIÂY
-    // ===============================
-
-    const h = Math.floor(
-        totalSeconds / 3600
-    );
-
-    const m = Math.floor(
-        (totalSeconds % 3600) / 60
-    );
-
-    const s = totalSeconds % 60;
-
-
-    // ===============================
-    // HIỂN THỊ
-    // DƯỚI 1 GIỜ  → MM:SS
-    // TỪ 1 GIỜ   → HH:MM:SS
-    // ===============================
-
-    let displayTime;
-
-    if (h === 0) {
-
-        displayTime =
-            `${String(m).padStart(2, "0")}:` +
-            `${String(s).padStart(2, "0")}`;
-
-    } else {
-
-        displayTime =
-            `${String(h).padStart(2, "0")}:` +
-            `${String(m).padStart(2, "0")}:` +
-            `${String(s).padStart(2, "0")}`;
-    }
-
-
-    // Đưa thời gian lên giao diện
-    document.getElementById("countdown").textContent =
-        displayTime;
+ // Hiển thị thời gian đếm ngược
+document.getElementById("countdown").textContent = displayTime;   
 }
 
 
