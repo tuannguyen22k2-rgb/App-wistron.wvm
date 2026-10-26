@@ -217,34 +217,29 @@ updateClock();
 setInterval(updateClock, 1000);
 
 
-// ===============================
-// COUNTDOWN 24 GIỜ
-// BẮT ĐẦU TỪ 00:00
-// ĐÓNG TRANG VẪN TIẾP TỤC
-// ===============================
+const start = new Date(now);
+start.setHours(START_HOUR, START_MINUTE, 0, 0);
 
-const startSeconds = 0;
+const end = new Date(now);
+end.setHours(END_HOUR, END_MINUTE, 0, 0);
 
-// Lấy thời điểm bắt đầu đã lưu
-let startTime = localStorage.getItem("countdownStartTime");
+let elapsedSeconds = 0;
 
-// Nếu chưa có thì tạo thời điểm bắt đầu
-if (!startTime) {
-
-    startTime = Date.now();
-
-    localStorage.setItem(
-        "countdownStartTime",
-        startTime
-    );
+if (now >= start && now < end) {
+    elapsedSeconds = Math.floor((now - start) / 1000);
 }
 
-function updateCountdown() {
+const h = Math.floor(elapsedSeconds / 3600);
+const m = Math.floor((elapsedSeconds % 3600) / 60);
+const s = elapsedSeconds % 60;
 
-    // Số giây đã trôi qua kể từ lúc bắt đầu
-    const elapsedSeconds = Math.floor(
-        (Date.now() - Number(startTime)) / 1000
-    );
+const displayTime =
+    `${String(h).padStart(2, "0")}:` +
+    `${String(m).padStart(2, "0")}:` +
+    `${String(s).padStart(2, "0")}`;
+
+document.getElementById("countdown").textContent = displayTime;
+
 
     // Thời gian hiện tại của bộ đếm
     const totalSeconds =
