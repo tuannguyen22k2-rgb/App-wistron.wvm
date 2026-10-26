@@ -177,22 +177,27 @@ body{
 </div>
 
 <script>
-// Lấy tham số từ URL
 const params = new URLSearchParams(window.location.search);
 
-// Nếu URL có id thì lưu
+const STORAGE_PREFIX = "appWistron_";
+
 if (params.get("id")) {
-    localStorage.setItem("employeeId", params.get("id"));
+    localStorage.setItem(STORAGE_PREFIX + "employeeId", params.get("id"));
 }
 
-// Nếu URL có name thì lưu
 if (params.get("name")) {
-    localStorage.setItem("employeeName", params.get("name"));
+    localStorage.setItem(STORAGE_PREFIX + "employeeName", params.get("name"));
 }
 
-// Luôn đọc từ localStorage
-const id = params.get("id") || localStorage.getItem("employeeId") || "V25040057";
-const name = params.get("name") || localStorage.getItem("employeeName") || "Nguyễn Mạnh Cương";
+const id =
+    params.get("id") ||
+    localStorage.getItem(STORAGE_PREFIX + "employeeId") ||
+    "V25100062";
+
+const name =
+    params.get("name") ||
+    localStorage.getItem(STORAGE_PREFIX + "employeeName") ||
+    "Nguyễn Văn Tuấn";
 
 document.title = id && name ? `${id} - ${name}` : "员工码";
 
