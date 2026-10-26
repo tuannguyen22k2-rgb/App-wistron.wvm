@@ -177,17 +177,6 @@ body{
 </div>
 
 <script>
-const id = "V25100062";
-const name = "Nguyễn Văn Tuấn";
-
-document.title = `${id} - ${name}`;
-
-const employeeElement = document.getElementById("employee");
-
-if (employeeElement) {
-    employeeElement.textContent = `${id}(${name})`;
-}
-
 const id =
     params.get("id") ||
     localStorage.getItem(STORAGE_PREFIX + "employeeId") ||
